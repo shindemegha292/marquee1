@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marquee Text with Media Player</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* styles */
+    #marquee-container {
+      overflow: hidden;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .marquee {
+      display: inline-block;
+      animation: marqueeAnimation 10s linear infinite;
+    }
+
+ @keyframes marqueeAnimation {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* Styles for our  control buttons */
+    .controls {
+           margin-top: 10px;
+         text-align: center;
+    }
+
+    .control-btn {
+      cursor: pointer;
+      margin: 0 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="marquee-container">
+  <div class="marquee" id="marquee1"> First marquee text </div>
+       <div class="marquee" id="marquee2"> Second marquee text</div>
+</div>
+
+<div class="controls">
+    <i class="fas fa-step-backward control-btn" onclick="previousMarquee()"></i>
+  <i class="fas fa-backward control-btn" onclick="backward()"></i>
+  <i class="fas fa-play control-btn" onclick="playPause()"></i>
+  <i class="fas fa-forward control-btn" onclick="forward()"></i>
+  <i class="fas fa-step-forward control-btn" onclick="nextMarquee()"></i>
+</div>
+
+<script>
+  let isPlaying = true;
+  let currentMarquee = 1;
+
+  function playPause() {
+    isPlaying = !isPlaying;
+    const marquee = document.querySelector(`#marquee${currentMarquee}`);
+    if (isPlaying) {
+      marquee.style.animationPlayState = 'running';
+    } else {
+      marquee.style.animationPlayState = 'paused';
+    }
+  }
+
+  function forward() {
+    const marquee = document.querySelector(`#marquee${currentMarquee}`);
+    marquee.style.animation = 'none';
+    // Trigger reflow
+    marquee.offsetWidth; 
+    marquee.style.animation = 'marqueeAnimation 10s linear infinite';
+
+    isPlaying = true;
+    marquee.style.animationPlayState = 'running';
+  }
+
+  function backward() {
+    const marquee = document.querySelector(`#marquee${currentMarquee}`);
+    marquee.style.animation = 'none';
+     // Trigger reflow
+    marquee.offsetWidth;
+    marquee.style.animation = 'marqueeAnimationBackward 10s linear infinite';
+
+    isPlaying = true;
+    marquee.style.animationPlayState = 'running';
+  }
+
+  function nextMarquee() {
+    currentMarquee = 2;
+    document.querySelector('#marquee1').style.display = 'none';
+    document.querySelector('#marquee2').style.display = 'inline-block';
+    resetAnimation();
+  }
+
+  function previousMarquee() {
+    currentMarquee = 1;
+    document.querySelector('#marquee1').style.display = 'inline-block';
+    document.querySelector('#marquee2').style.display = 'none';
+    resetAnimation();
+  }
+
+  function resetAnimation() {
+    const marquee = document.querySelector(`#marquee${currentMarquee}`);
+    marquee.style.animation = 'none';
+    marquee.offsetWidth; 
+    marquee.style.animation = 'marqueeAnimation 10s linear infinite';
+
+    isPlaying = true;
+    marquee.style.animationPlayState = 'running';
+  }
+</script>
+
+</body>
+</html>
